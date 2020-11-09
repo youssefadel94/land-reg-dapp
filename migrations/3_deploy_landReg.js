@@ -1,5 +1,5 @@
-var landReg = artifacts.require("./landReg.sol");
+var LandReg = artifacts.require("./LandReg.sol");
 
 module.exports = function (deployer) {
-    deployer.deploy(landReg);
+    deployer.deploy(LandReg);
 };

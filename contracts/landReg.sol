@@ -1,7 +1,7 @@
 pragma solidity >=0.4.22 <0.8.0;
 
 
-contract Payment {
+contract LandReg {
     //is Ownable{
     address public owner;
     mapping(uint256 => bool) public users;
@@ -24,7 +24,7 @@ contract Payment {
     }
 
     function isUserReg(uint256 _id) public returns (bool) {
-        
+        emit LogBool(users[_id]);
         return true;
     }
 
