@@ -14,7 +14,6 @@ contract Payment {
         address _transferFrom,
         uint256 amount
     );
-    event CreateUserEvent(uint256 _id);
 
     function transferFund(address payable _transferTo)
         public
@@ -31,8 +30,5 @@ contract Payment {
         return transferFrom.balance;
     }
 
-    function createUser(uint256 _id) public returns (bool) {
-        emit CreateUserEvent (_id);
-        return true;
-    }
+
 }
