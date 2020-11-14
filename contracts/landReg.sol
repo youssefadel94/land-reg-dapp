@@ -9,15 +9,15 @@ contract LandReg {
     //log
     event LogBool(bool state);
     event LogUint256(uint256 state);
-    event LogFixed128x18(fixed128x18 state);
+    //event LogFixed128x18(fixed128x18 state);
 
     event CreateUserEvent(uint256 _id);
 
     event SendSomethingEvent(
         uint256 sender,
-        uint256 receiver,
-        fixed128x18 long,
-        fixed128x18 lat
+        uint256 receiver//,
+        // fixed128x18 long,
+        // fixed128x18 lat
     );
 
     constructor() public {
@@ -40,12 +40,12 @@ contract LandReg {
     //function send test
     function sendSomething(
         uint256 sender,
-        uint256 receiver,
-        fixed128x18 long,
-        fixed128x18 lat
+        uint256 receiver//,
+        // fixed128x18 long,
+        // fixed128x18 lat
     ) public returns (bool) {
         require(users[receiver] != 0, "receiver is not registered");
-        emit SendSomethingEvent(sender, receiver, long, lat);
+        emit SendSomethingEvent(sender, receiver);//, long, lat);
         return true;
     }
 
