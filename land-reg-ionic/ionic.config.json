@@ -1,0 +1,7 @@
+{
+  "name": "land-reg-ionic",
+  "integrations": {
+    "cordova": {}
+  },
+  "type": "angular"
+}
