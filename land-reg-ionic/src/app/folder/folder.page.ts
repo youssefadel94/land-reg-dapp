@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { EthcontractService } from '../ethcontract.service';
+import { ContractService } from '../contract';
 
 @Component({
   selector: 'app-folder',
@@ -10,7 +10,7 @@ import { EthcontractService } from '../ethcontract.service';
 export class FolderPage implements OnInit {
   public folder: string;
 
-  constructor(private activatedRoute: ActivatedRoute, private ethcontractService: EthcontractService) { }
+  constructor(private activatedRoute: ActivatedRoute, private contractService: ContractService) { }
 
   title = 'your first DApp in Angular';
   accounts: any;
@@ -22,10 +22,11 @@ export class FolderPage implements OnInit {
 
   ngOnInit() {
     this.folder = this.activatedRoute.snapshot.paramMap.get('id');
+    this.initAndDisplayAccount();
   }
   initAndDisplayAccount = () => {
     let that = this;
-    this.ethcontractService.getAccountInfo().then(function (acctInfo: any) {
+    this.contractService.getAccountInfo().then(function (acctInfo: any) {
       console.log(acctInfo);
       that.transferFrom = acctInfo.fromAccount;
       that.balance = acctInfo.balance;
@@ -38,7 +39,7 @@ export class FolderPage implements OnInit {
   transferEther(event) {
     let that = this;
     console.log(this.transferTo);
-    this.ethcontractService.transferEther(
+    this.contractService.transferEther(
       this.transferFrom,
       this.transferTo,
       this.amount,
