@@ -9,11 +9,43 @@
 
 <ion-content [fullscreen]="true">
 <!--The content below is only a placeholder and can be replaced.-->
-<div style="text-align:center">
-  <h1>
-    Welcome to {{title}}!
-  </h1>
-</div>
+
+
+  <div style="text-align:center">
+    <h1>
+      Welcome to {{title}}!
+   </h1>
+  </div>
+  
+  <ion-item>
+  <ion-label>ID:</ion-label>
+  <ion-input [(ngModel)]="id" type="number"  placeholder="Enter Your ID"></ion-input>
+  </ion-item>
+  <ion-item>
+  <ion-label>Reciver ID:</ion-label>
+  <ion-input [(ngModel)]="reciverId" type="number" placeholder="Enter Reciver ID"></ion-input>
+  </ion-item>
+  <ion-item>
+  <ion-label>value:</ion-label>
+  <ion-input [(ngModel)]="value" type="number" placeholder="Enter property ID"></ion-input>
+  </ion-item>
+  <ion-item>
+  <ion-label color="danger">{{error}}</ion-label>
+  </ion-item>
+    <ion-item>
+
+<ion-label></ion-label>
+    <!-- Colors -->
+    <ion-button color="light" (click)="getID()" >Get ID</ion-button>
+  
+  
+    <!-- Default -->
+    <ion-button (click)="transferProperty()" >Transfer Property</ion-button>
+    </ion-item>
+
+
+
+<!--
 <form>
   <div class="container">
     <div class="tab">
@@ -36,7 +68,7 @@
     <button type="submit" class="trfbtn" (click)="transferEther($event)">Transfer Ether</button>&nbsp;&nbsp;
   </div>
 
-</form>
+</form>-->
 
 
 

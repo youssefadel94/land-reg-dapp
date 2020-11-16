@@ -12,13 +12,17 @@ export class FolderPage implements OnInit {
 
   constructor(private activatedRoute: ActivatedRoute, private contractService: ContractService) { }
 
-  title = 'your first DApp in Angular';
+  title = 'LandRegistry DApp';
   accounts: any;
   transferFrom = '0x0';
   balance = '0 ETH';
   transferTo = '';
   amount = 0;
   remarks = '';
+  id ;
+  reciverId;
+  value;
+  error="";
 
   ngOnInit() {
     this.folder = this.activatedRoute.snapshot.paramMap.get('id');
@@ -35,20 +39,38 @@ export class FolderPage implements OnInit {
     });
 
   };
-
-  transferEther(event) {
-    let that = this;
-    console.log(this.transferTo);
-    this.contractService.transferEther(
-      this.transferFrom,
-      this.transferTo,
-      this.amount,
-      this.remarks
-    ).then(function () {
-      that.initAndDisplayAccount();
-    }).catch(function (error) {
-      console.log(error);
-      that.initAndDisplayAccount();
-    })
+  getID(){
+    console.log(this.id);
+    this.contractService.getID(this.id,this.transferFrom);
+    this.error = "account registered";
   }
+  transferProperty(){
+    let that=this;
+    console.log(this.id,this.reciverId,this.value);
+    this.getID();
+    this.contractService.transferProperty(this.id,this.reciverId,this.value,this.transferFrom).then(
+      function () {
+        that.error="transfer complete";
+       that.initAndDisplayAccount();
+     }).catch(function (error) {
+       console.log(error);
+       that.error = "reciving id is not registered"
+       that.initAndDisplayAccount();
+     });
+  }
+  // transferEther(event) {
+  //   let that = this;
+  //   console.log(this.transferTo);
+  //   this.contractService.transferEther(
+  //     this.transferFrom,
+  //     this.transferTo,
+  //     this.amount,
+  //     this.remarks
+  //   ).then(function () {
+  //     that.initAndDisplayAccount();
+  //   }).catch(function (error) {
+  //     console.log(error);
+  //     that.initAndDisplayAccount();
+  //   })
+  // }
 }

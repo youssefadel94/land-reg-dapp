@@ -6,7 +6,7 @@ const Web3 = require("web3");
 declare let require: any;
 declare let window: any;
 
-let tokenAbi = require('../../../build/contracts/Payment.json');
+let tokenAbi = require('../../../build/contracts/LandReg.json');
 
 @Injectable({
   providedIn: 'root'
@@ -31,7 +31,6 @@ export class ContractService {
   getAccountInfo() {
     return new Promise((resolve, reject) => {
       window.web3.eth.getCoinbase(function(err, account) {
-
         if(err === null) {
           window.web3.eth.getBalance(account, function(err, balance) {
             if(err === null) {
@@ -44,13 +43,7 @@ export class ContractService {
       });
     });
   }
-
-  transferEther(
-    _transferFrom,
-    _transferTo,
-    _amount,
-    _remarks
-  ) {
+  getID(id,_transferFrom){
     let that = this;
 
     return new Promise((resolve, reject) => {
@@ -58,12 +51,10 @@ export class ContractService {
       paymentContract.setProvider(that.web3Provider);
 
       paymentContract.deployed().then(function(instance) {
-          return instance.transferFund(
-            _transferTo,
-            {
-              from:_transferFrom,
-              value: window.web3.utils.toWei(_amount, "ether")
-            });
+          return instance.createUser(id,{
+               from:_transferFrom,
+               value: ""
+             });
         }).then(function(status) {
           if(status) {
             return resolve({status:true});
@@ -71,8 +62,63 @@ export class ContractService {
         }).catch(function(error){
           console.log(error);
 
-          return reject("Error in transferEther service call");
+          return reject("Error in getID");
         });
     });
   }
+    transferProperty(id,reciverId,value,_transferFrom){
+    let that = this;
+
+    return new Promise((resolve, reject) => {
+      let paymentContract = TruffleContract(tokenAbi);
+      paymentContract.setProvider(that.web3Provider);
+
+      paymentContract.deployed().then(function(instance) {
+          return instance.transferProperty(id,reciverId,value,{
+               from:_transferFrom,
+               value: ""
+             });
+        }).then(function(status) {
+          if(status) {
+            return resolve({status:true});
+          }
+        }).catch(function(error){
+          console.log(error);
+
+          return reject("Error in transferProperty");
+        });
+    });
+  }
+
+
+  // transferEther(
+  //   _transferFrom,
+  //   _transferTo,
+  //   _amount,
+  //   _remarks
+  // ) {
+  //   let that = this;
+
+  //   return new Promise((resolve, reject) => {
+  //     let paymentContract = TruffleContract(tokenAbi);
+  //     paymentContract.setProvider(that.web3Provider);
+
+  //     paymentContract.deployed().then(function(instance) {
+  //         return instance.transferFund(
+  //           _transferTo,
+  //           {
+  //             from:_transferFrom,
+  //             value: window.web3.utils.toWei(_amount, "ether")
+  //           });
+  //       }).then(function(status) {
+  //         if(status) {
+  //           return resolve({status:true});
+  //         }
+  //       }).catch(function(error){
+  //         console.log(error);
+
+  //         return reject("Error in transferEther service call");
+  //       });
+  //   });
+  // }
 }

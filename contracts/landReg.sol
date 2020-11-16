@@ -13,9 +13,10 @@ contract LandReg {
 
     event CreateUserEvent(uint256 _id);
 
-    event SendSomethingEvent(
+    event transferPropertyEvent(
         uint256 sender,
-        uint256 receiver//,
+        uint256 receiver,
+        uint256 value//,
         // fixed128x18 long,
         // fixed128x18 lat
     );
@@ -25,7 +26,7 @@ contract LandReg {
     }
 
     function createUser(uint256 _id) public returns (bool) {
-        require(users[_id] == 0, "user already registered");
+        //require(users[_id] == 0, "user already registered");
         users[_id] = _id;
         emit CreateUserEvent(_id);
         return true;
@@ -38,14 +39,16 @@ contract LandReg {
     // }
 
     //function send test
-    function sendSomething(
+    function transferProperty(
         uint256 sender,
-        uint256 receiver//,
+        uint256 receiver,
+        uint256 value
+        //,
         // fixed128x18 long,
         // fixed128x18 lat
     ) public returns (bool) {
         require(users[receiver] != 0, "receiver is not registered");
-        emit SendSomethingEvent(sender, receiver);//, long, lat);
+        emit transferPropertyEvent(sender, receiver, value);//, long, lat);
         return true;
     }
 
