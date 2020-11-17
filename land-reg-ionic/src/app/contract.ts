@@ -30,63 +30,63 @@ export class ContractService {
 
   getAccountInfo() {
     return new Promise((resolve, reject) => {
-      window.web3.eth.getCoinbase(function(err, account) {
-        if(err === null) {
-          window.web3.eth.getBalance(account, function(err, balance) {
-            if(err === null) {
-              return resolve({ fromAccount: account, balance: (window.web3.utils.fromWei(balance, "ether"))});
+      window.web3.eth.getCoinbase(function (err, account) {
+        if (err === null) {
+          window.web3.eth.getBalance(account, function (err, balance) {
+            if (err === null) {
+              return resolve({ fromAccount: account, balance: (window.web3.utils.fromWei(balance, "ether")) });
             } else {
-              return reject({fromAccount: "error", balance:0});
+              return reject({ fromAccount: "error", balance: 0 });
             }
           });
         }
       });
     });
   }
-  getID(id,_transferFrom){
+  getID(id, _transferFrom) {
     let that = this;
 
     return new Promise((resolve, reject) => {
       let paymentContract = TruffleContract(tokenAbi);
       paymentContract.setProvider(that.web3Provider);
 
-      paymentContract.deployed().then(function(instance) {
-          return instance.createUser(id,{
-               from:_transferFrom,
-               value: ""
-             });
-        }).then(function(status) {
-          if(status) {
-            return resolve({status:true});
-          }
-        }).catch(function(error){
-          console.log(error);
-
-          return reject("Error in getID");
+      paymentContract.deployed().then(function (instance) {
+        return instance.createUser(id, {
+          from: _transferFrom,
+          value: ""
         });
+      }).then(function (status) {
+        if (status) {
+          return resolve({ status: true });
+        }
+      }).catch(function (error) {
+        console.log(error);
+
+        return reject("Error in getID");
+      });
     });
   }
-    transferProperty(id,reciverId,value,_transferFrom){
+  transferProperty(id, receiverId, value, _transferFrom) {
     let that = this;
 
     return new Promise((resolve, reject) => {
       let paymentContract = TruffleContract(tokenAbi);
       paymentContract.setProvider(that.web3Provider);
 
-      paymentContract.deployed().then(function(instance) {
-          return instance.transferProperty(id,reciverId,value,{
-               from:_transferFrom,
-               value: ""
-             });
-        }).then(function(status) {
-          if(status) {
-            return resolve({status:true});
-          }
-        }).catch(function(error){
-          console.log(error);
-
-          return reject("Error in transferProperty");
+      paymentContract.deployed().then(function (instance) {
+        return instance.transferProperty(id, receiverId, value, {
+          from: _transferFrom,
+          value: ""
         });
+      }).then(function (status) {
+        if (status) {
+          return resolve({ status: true });
+        }
+      }).catch(function (error) {
+        console.log(error);
+
+        return reject("Error in transferProperty");
+      });
     });
   }
 

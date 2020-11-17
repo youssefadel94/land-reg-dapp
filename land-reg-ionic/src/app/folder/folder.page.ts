@@ -20,7 +20,7 @@ export class FolderPage implements OnInit {
   amount = 0;
   remarks = '';
   id ;
-  reciverId;
+  receiverId;
   value;
   error="";
 
@@ -46,9 +46,9 @@ export class FolderPage implements OnInit {
   }
   transferProperty(){
     let that=this;
-    console.log(this.id,this.reciverId,this.value);
+    console.log(this.id,this.receiverId,this.value);
     this.getID();
-    this.contractService.transferProperty(this.id,this.reciverId,this.value,this.transferFrom).then(
+    this.contractService.transferProperty(this.id,this.receiverId,this.value,this.transferFrom).then(
       function () {
         that.error="transfer complete";
        that.initAndDisplayAccount();
