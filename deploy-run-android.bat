@@ -1,1 +1,1 @@
-cmd /k "d: && cd D:\work\GUC\land-reg-dapp && truffle migrate — compile-all — reset — network ganache && cd land-reg-ionic && ionic cordova run android -l --consolelogs --address=192.168.190.1 --port:7545"
+cmd /k "d: && cd D:\work\GUC\land-reg-dapp && truffle migrate — compile-all — reset — network ganache && cd land-reg-ionic && ionic cordova run android -l --consolelogs --address=192.168.190.1 --port=7545"
