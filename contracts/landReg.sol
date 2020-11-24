@@ -3,11 +3,11 @@ pragma solidity >=0.4.22 <0.8.0;
 
 contract LandReg {
     //is Ownable{
-    
-    // struct Data {  
-    //     string name;  
+
+    // struct Data {
+    //     string name;
     //     string long;
-    //     string lat; 
+    //     string lat;
     //     string owner;
     // }
 
@@ -25,10 +25,7 @@ contract LandReg {
 
     event CreateUserEvent(uint256 _id);
 
-    event DeclarePropertyEvent(
-        uint256 sender,
-        uint256 value
-    );
+    event DeclarePropertyEvent(uint256 sender, uint256 value);
 
     event TransferPropertyEvent(
         uint256 sender,
@@ -37,7 +34,7 @@ contract LandReg {
     );
 
     constructor() public {
-        owner = (address(this));//msg.sender;//make contract owner of itself
+        owner = (address(this)); //msg.sender;//make contract owner of itself
     }
 
     // function createUser(uint256 _id, address _address) public returns (bool) {
@@ -46,13 +43,17 @@ contract LandReg {
     //     emit CreateUserEvent(_id);
     //     return true;
     // }
+    function createUser(uint256 _id, address _address) public returns (bool) {
+        require(
+            users[_id] == address(0) || users[_id] == _address,
+            "already with different address"
+        );
 
-    function enterUser(uint256 _id, address _address) public returns (bool) {
-        require(users[_id] == address(0), "user already registered");
         users[_id] = _address;
         //emit CreateUserEvent(_id);
         return true;
     }
+
     // function isUserReg(uint256 _id) private returns (bool) {
     //     uint256 state = users[_id];
     //     //emit LogUint256(state);
@@ -61,28 +62,37 @@ contract LandReg {
     //function registerLand test
     function registerLand(
         uint256 sender,
+        address _address,
         uint256 value
     ) public returns (bool) {
         require(users[sender] != address(0), "receiver is not registered");
-        require(!(propertyFireBase[users[sender]][value]), "you own this property");
+        require(users[sender] == _address, "wrong address invalid operation");
+        require(
+            !(propertyFireBase[users[sender]][value]),
+            "you own this property"
+        );
         //delete propertyFireBase[users[sender]][value];
         propertyFireBase[users[sender]][value] = true;
-        emit DeclarePropertyEvent(sender, value);//, long, lat);
+        emit DeclarePropertyEvent(sender, value); //, long, lat);
         return true;
     }
 
     //function send test
     function transferProperty(
         uint256 sender,
+        address _address,
         uint256 receiver,
         uint256 value
     ) public returns (bool) {
         require(users[receiver] != address(0), "receiver is not registered");
-        require(propertyFireBase[users[sender]][value] , "you do not own this property");
+        require(users[sender] == _address, "wrong address invalid operation");
+        require(
+            propertyFireBase[users[sender]][value],
+            "you do not own this property"
+        );
         delete propertyFireBase[users[sender]][value];
         propertyFireBase[users[receiver]][value] = true;
-        emit TransferPropertyEvent(sender, receiver, value);//, long, lat);
+        emit TransferPropertyEvent(sender, receiver, value); //, long, lat);
         return true;
     }
-
 }

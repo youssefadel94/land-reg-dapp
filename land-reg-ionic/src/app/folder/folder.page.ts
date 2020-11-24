@@ -21,6 +21,7 @@ export class FolderPage implements OnInit {
   remarks = '';
   id ;
   receiverId;
+  address;
   value;
   error="";
 
@@ -41,22 +42,36 @@ export class FolderPage implements OnInit {
   };
   getID(){
     console.log(this.id);
-    this.contractService.getID(this.id,this.transferFrom);
+    this.contractService.getID(this.id,this.address);
     this.error = "account registered";
+  }
+  registerLand() {
+    let that = this;
+    console.log(this.id, this.address,  this.value);
+    this.getID();
+    this.contractService.registerLand(this.id, this.address, this.value).then(
+      function () {
+        that.error = "transfer complete";
+        that.initAndDisplayAccount();
+      }).catch(function (error) {
+        console.log(error);
+        that.error = "something went wrong in register land"
+        that.initAndDisplayAccount();
+      });
   }
   transferProperty(){
     let that=this;
-    console.log(this.id,this.receiverId,this.value);
+    console.log(this.id, this.address,this.receiverId,this.value);
     this.getID();
-    this.contractService.transferProperty(this.id,this.receiverId,this.value,this.transferFrom).then(
+    this.contractService.transferProperty(this.id, this.address, this.receiverId,this.value).then(
       function () {
         that.error="transfer complete";
-       that.initAndDisplayAccount();
-     }).catch(function (error) {
-       console.log(error);
-       that.error = "reciving id is not registered"
-       that.initAndDisplayAccount();
-     });
+      that.initAndDisplayAccount();
+    }).catch(function (error) {
+      console.log(error);
+      that.error = "receiving id is not registered"
+      that.initAndDisplayAccount();
+    });
   }
   // transferEther(event) {
   //   let that = this;

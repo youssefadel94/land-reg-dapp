@@ -21,7 +21,7 @@ export class ContractService {
     if (typeof window.web3 !== 'undefined') {
       this.web3Provider = window.web3.currentProvider;
     } else {
-      this.web3Provider = new Web3.providers.HttpProvider('http://localhost:7545');
+      this.web3Provider = new Web3.providers.HttpProvider('http://192.168.190.1:7545');
     }
 
     window.web3 = new Web3(this.web3Provider);
@@ -43,16 +43,16 @@ export class ContractService {
       });
     });
   }
-  getID(id, _transferFrom) {
+  getID(id, address) {
     let that = this;
 
     return new Promise((resolve, reject) => {
       let paymentContract = TruffleContract(tokenAbi);
       paymentContract.setProvider(that.web3Provider);
-
+      //from address is the address of sender
       paymentContract.deployed().then(function (instance) {
-        return instance.createUser(id, {
-          from: _transferFrom,
+        return instance.createUser(id, address, {
+          from: address,
           value: ""
         });
       }).then(function (status) {
@@ -66,7 +66,7 @@ export class ContractService {
       });
     });
   }
-  transferProperty(id, receiverId, value, _transferFrom) {
+  registerLand(id, address, value) {
     let that = this;
 
     return new Promise((resolve, reject) => {
@@ -74,8 +74,31 @@ export class ContractService {
       paymentContract.setProvider(that.web3Provider);
 
       paymentContract.deployed().then(function (instance) {
-        return instance.transferProperty(id, receiverId, value, {
-          from: _transferFrom,
+        return instance.registerLand(id, address, value, {
+          from: address,
+          value: ""
+        });
+      }).then(function (status) {
+        if (status) {
+          return resolve({ status: true });
+        }
+      }).catch(function (error) {
+        console.log(error);
+
+        return reject("Error in register property");
+      });
+    });
+  }
+  transferProperty(id, address, receiverId, value) {
+    let that = this;
+
+    return new Promise((resolve, reject) => {
+      let paymentContract = TruffleContract(tokenAbi);
+      paymentContract.setProvider(that.web3Provider);
+
+      paymentContract.deployed().then(function (instance) {
+        return instance.transferProperty(id, address, receiverId, value, {
+          from: address,
           value: ""
         });
       }).then(function (status) {
