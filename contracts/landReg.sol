@@ -15,7 +15,7 @@ contract LandReg {
 
     mapping(uint256 => address) public users;
     //mapping(address => mapping(uint256 => data)) public property;
-    mapping(address => mapping(bytes32 => bool)) public propertyFireBase;
+    mapping(address => mapping(bytes32 => bool)) public propertyFireBase;//string string memory
     //mapping(address => mapping(address => bool)) private ;
 
     //log
