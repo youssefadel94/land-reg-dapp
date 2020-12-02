@@ -2,16 +2,42 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { ContractService } from '../contract';
 
+import { AngularFirestore } from 'angularfire2/firestore';
+import { AngularFirestoreCollection } from 'angularfire2/firestore';
+import { AngularFireDatabase } from 'angularfire2/database';
+import { AngularFireAuth } from 'angularfire2/auth';
+
+import firebase  from 'firebase'
+import { Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
+
+interface apartment {
+  address: string,
+  location: firebase.firestore.GeoPoint,
+  approved: boolean,
+  
+}
+
 @Component({
   selector: 'app-folder',
   templateUrl: './folder.page.html',
   styleUrls: ['./folder.page.scss'],
 })
+
+
 export class FolderPage implements OnInit {
   public folder: string;
+apartment: Observable<apartment[]>;
+apartmentsCollectionRef: AngularFirestoreCollection<apartment>;
 
-  constructor(private activatedRoute: ActivatedRoute, private contractService: ContractService) { }
+  constructor(public afAuth: AngularFireAuth, public afs: AngularFirestore, private activatedRoute: ActivatedRoute, private contractService: ContractService) { 
 
+    this.afAuth.auth.signInAnonymously();
+    this.apartmentsCollectionRef = this.afs.collection('apartment');
+    this.apartment = this.apartmentsCollectionRef.valueChanges();
+  }
+
+  
   title = 'LandRegistry DApp';
   accounts: any;
   transferFrom = '0x0';
@@ -23,7 +49,12 @@ export class FolderPage implements OnInit {
   receiverId;
   address;
   value;
-  error="";
+  error = "";
+  addressFireBase;
+  location: firebase.firestore.GeoPoint;
+  _apartment: apartment;
+
+
 
   ngOnInit() {
     this.folder = this.activatedRoute.snapshot.paramMap.get('id');
@@ -73,6 +104,34 @@ export class FolderPage implements OnInit {
       that.initAndDisplayAccount();
     });
   }
+
+  createApartment(name: string, description: string, quantity: number) {
+    this.apartmentsCollectionRef.add({ address: this.addressFireBase, location: this.location, approved: false });
+  }
+  getApartment(id: string):apartment {
+    var apartmentDocuments = this.afs.collection<apartment>('/apartment').doc(id);
+    apartmentDocuments.ref.get()
+      .then((doc) => {
+        if (doc.exists) {
+          this.addressFireBase = doc.data.address;
+          this.location = doc.data.location;
+          this._apartment.address = doc.data.address;
+          this._apartment.location = doc.data.location;
+          console.log('Apartment: ', doc.data());
+        } else {
+          console.error('No matching invoice found');
+        }
+        
+      });
+    return this._apartment;
+  }
+  // updateapartment(apartment: apartment) {
+  //   this.apartmentsCollectionRef.doc(apartment.id).update({ name: 'NEW_NAME', description: 'NEW_DESC', quantity: apartment.quantity + 100 /*NEW QUANTITY*/ });
+  // }
+  // deleteapartment(apartment: apartment) {
+  //   this.apartmentsCollectionRef.doc(apartment.id).delete();
+  // }
+
   // transferEther(event) {
   //   let that = this;
   //   console.log(this.transferTo);

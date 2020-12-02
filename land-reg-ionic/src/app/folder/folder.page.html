@@ -55,6 +55,20 @@
     <ion-button (click)="transferProperty()" >Transfer Property</ion-button>
     </ion-item>
 
+
+
+<ion-list>
+  <ion-list-header>
+    Apartments
+  </ion-list-header>
+  <ion-item  *ngFor="let apartment of apartments | async">
+    <h1></h1>
+    <p></p> 
+    <p></p>
+  </ion-item>
+</ion-list>
+
+
 <!--
 <form>
   <div class="container">
