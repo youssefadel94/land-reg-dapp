@@ -15,7 +15,7 @@ contract LandReg {
 
     mapping(uint256 => address) public users;
     //mapping(address => mapping(uint256 => data)) public property;
-    mapping(address => mapping(bytes32 => bool)) public propertyFireBase;//string string memory
+    mapping(address => mapping(string => bool)) public propertyFireBase;//string string memory
     //mapping(address => mapping(address => bool)) private ;
 
     //log
@@ -25,12 +25,12 @@ contract LandReg {
 
     event CreateUserEvent(uint256 _id);
 
-    event DeclarePropertyEvent(uint256 sender, bytes32 value);
+    event DeclarePropertyEvent(uint256 sender, string value);
 
     event TransferPropertyEvent(
         uint256 sender,
         uint256 receiver,
-        bytes32 value
+        string value
     );
 
     constructor() public {
@@ -55,8 +55,8 @@ contract LandReg {
     }
 
 
-//  function getProperty(address _address) public view returns (bytes32[] memory) {
-//         bytes32[] memory memoryArray = new bytes32[](propertyFireBase[_address].sizeOfMapping);
+//  function getProperty(address _address) public view returns (string[] memory) {
+//         string[] memory memoryArray = new string[](propertyFireBase[_address].sizeOfMapping);
 //         for(uint i = 0; i < propertyFireBase[_address].sizeOfMapping; i++) {
 //             memoryArray[i] = propertyFireBase[_address].myMappingInStruct[i];
 //         }
@@ -71,7 +71,7 @@ contract LandReg {
     function registerLand(
         uint256 sender,
         address _address,
-        bytes32 value
+        string memory value
     ) public returns (bool) {
         require(users[sender] != address(0), "receiver is not registered");
         require(users[sender] == _address, "wrong address invalid operation");
@@ -90,7 +90,7 @@ contract LandReg {
         uint256 sender,
         address _address,
         uint256 receiver,
-        bytes32 value
+        string memory value
     ) public returns (bool) {
         require(users[receiver] != address(0), "receiver is not registered");
         require(users[sender] == _address, "wrong address invalid operation");

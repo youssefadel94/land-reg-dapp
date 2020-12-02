@@ -59,6 +59,7 @@ apartmentsCollectionRef: AngularFirestoreCollection<apartment>;
   ngOnInit() {
     this.folder = this.activatedRoute.snapshot.paramMap.get('id');
     this.initAndDisplayAccount();
+    this.getApartment("ixdaT6MVNjmOCR2a4Tu0");
   }
   initAndDisplayAccount = () => {
     let that = this;
@@ -73,13 +74,29 @@ apartmentsCollectionRef: AngularFirestoreCollection<apartment>;
   };
   getID(){
     console.log(this.id);
-    this.contractService.getID(this.id,this.address);
+    this.contractService.getID(this.id, this.address);
+    this.getOwned();
     this.error = "account registered";
+  }
+  getOwned() { 
+    let that = this;
+      this.contractService.registerLand(this.id, this.address, this.value).then(
+        function () {
+          that.error = "transfer complete";
+          that.initAndDisplayAccount();
+        }).catch(function (error) {
+          console.log(error);
+          that.error = "something went wrong in register land"
+          that.initAndDisplayAccount();
+        });
+    
   }
   registerLand() {
     let that = this;
-    console.log(this.id, this.address,  this.value);
-    this.getID();
+    console.log(this.id, this.address, this.value);
+    
+    if (this.getApartment(this.value)) {
+      this.getID();
     this.contractService.registerLand(this.id, this.address, this.value).then(
       function () {
         that.error = "transfer complete";
@@ -89,6 +106,7 @@ apartmentsCollectionRef: AngularFirestoreCollection<apartment>;
         that.error = "something went wrong in register land"
         that.initAndDisplayAccount();
       });
+  }
   }
   transferProperty(){
     let that=this;
@@ -108,18 +126,21 @@ apartmentsCollectionRef: AngularFirestoreCollection<apartment>;
   createApartment(name: string, description: string, quantity: number) {
     this.apartmentsCollectionRef.add({ address: this.addressFireBase, location: this.location, approved: false });
   }
-  getApartment(id: string):apartment {
+  getApartment(id: string): apartment {
+    var that = this;
     var apartmentDocuments = this.afs.collection<apartment>('/apartment').doc(id);
     apartmentDocuments.ref.get()
       .then((doc) => {
         if (doc.exists) {
-          this.addressFireBase = doc.data.address;
-          this.location = doc.data.location;
-          this._apartment.address = doc.data.address;
-          this._apartment.location = doc.data.location;
-          console.log('Apartment: ', doc.data());
+          console.log('Apartment: ', id, doc.data());
+          var apartment = doc.data();
+          that.addressFireBase = apartment.address;
+          that.location = apartment.location;
+          that._apartment = apartment;
+          
         } else {
           console.error('No matching invoice found');
+          return null;
         }
         
       });

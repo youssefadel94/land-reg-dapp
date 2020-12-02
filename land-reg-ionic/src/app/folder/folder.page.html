@@ -31,7 +31,7 @@
   </ion-item>
   <ion-item>
   <ion-label>value:</ion-label>
-  <ion-input [(ngModel)]="value" type="number" placeholder="Enter property ID"></ion-input>
+  <ion-input [(ngModel)]="value" type="text" placeholder="Enter property ID"></ion-input>
   </ion-item>
   <ion-item>
   <ion-label color="danger">{{error}}</ion-label>
@@ -62,7 +62,7 @@
     Apartments
   </ion-list-header>
   <ion-item  *ngFor="let apartment of apartments | async">
-    <h1></h1>
+    <h1>{{apartment.address}}</h1>
     <p></p> 
     <p></p>
   </ion-item>
