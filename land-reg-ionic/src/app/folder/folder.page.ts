@@ -2,10 +2,10 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { ContractService } from '../contract';
 
-import { AngularFirestore } from 'angularfire2/firestore';
-import { AngularFirestoreCollection } from 'angularfire2/firestore';
-import { AngularFireDatabase } from 'angularfire2/database';
-import { AngularFireAuth } from 'angularfire2/auth';
+import { AngularFirestore } from '@angular/fire/firestore';
+import { AngularFirestoreCollection } from '@angular/fire/firestore';
+import { AngularFireDatabase } from '@angular/fire/database';
+import { AngularFireAuth } from '@angular/fire/auth';
 
 import firebase  from 'firebase'
 import { Observable } from 'rxjs';
@@ -32,7 +32,7 @@ apartmentsCollectionRef: AngularFirestoreCollection<apartment>;
 
   constructor(public afAuth: AngularFireAuth, public afs: AngularFirestore, private activatedRoute: ActivatedRoute, private contractService: ContractService) { 
 
-    this.afAuth.auth.signInAnonymously();
+    this.afAuth.signInAnonymously();
     this.apartmentsCollectionRef = this.afs.collection('apartment');
     this.apartment = this.apartmentsCollectionRef.valueChanges();
   }
@@ -136,7 +136,7 @@ apartmentsCollectionRef: AngularFirestoreCollection<apartment>;
           var apartment = doc.data();
           that.addressFireBase = apartment.address;
           that.location = apartment.location;
-          that._apartment = apartment;
+          that._apartment = <apartment>apartment;
           
         } else {
           console.error('No matching invoice found');
