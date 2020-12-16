@@ -45,7 +45,7 @@ export class ContractService {
   }
   getID(id, address) {
     let that = this;
-
+    // window.web3.eth.accounts.sign(data, privateKey);
     return new Promise((resolve, reject) => {
       let paymentContract = TruffleContract(tokenAbi);
       paymentContract.setProvider(that.web3Provider);

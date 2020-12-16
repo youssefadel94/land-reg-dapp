@@ -14,6 +14,7 @@ contract LandReg {
     address public owner;
 
     mapping(uint256 => address) public users;
+    mapping(string => bool) public properties;
     //mapping(address => mapping(uint256 => data)) public property;
     mapping(address => mapping(string => bool)) public propertyFireBase;//string string memory
     //mapping(address => mapping(address => bool)) private ;
@@ -75,6 +76,7 @@ contract LandReg {
     ) public returns (bool) {
         require(users[sender] != address(0), "receiver is not registered");
         require(users[sender] == _address, "wrong address invalid operation");
+        require(properties[value] == false, "property already in block chain!");
         require(
             !(propertyFireBase[users[sender]][value]),
             "you own this property"

@@ -17,33 +17,36 @@
    </h1>
   </div>
   
-  <ion-item>
+  <ion-item *ngIf="signIn">
   <ion-label>ID:</ion-label>
   <ion-input [(ngModel)]="id" type="number"  placeholder="Enter Your ID"></ion-input>
   </ion-item>
-    <ion-item>
+    <ion-item *ngIf="signIn">
   <ion-label>Address:</ion-label>
   <ion-input [(ngModel)]="address" type="text"  placeholder="Enter Your ID"></ion-input>
   </ion-item>
-  <ion-item>
+  <ion-item *ngIf="!signIn && transfer">
   <ion-label>Reciver ID:</ion-label>
   <ion-input [(ngModel)]="receiverId" type="number" placeholder="Enter Reciver ID"></ion-input>
   </ion-item>
-  <ion-item>
+  <ion-item *ngIf="!signIn">
   <ion-label>value:</ion-label>
   <ion-input [(ngModel)]="value" type="text" placeholder="Enter property ID"></ion-input>
   </ion-item>
   <ion-item>
   <ion-label color="danger">{{error}}</ion-label>
+  <ion-label color="success">{{success}}</ion-label>
   </ion-item>
     <ion-item>
-
 <ion-label></ion-label>
     <!-- Colors -->
-    <ion-button color="light" (click)="getID()" >Add Address</ion-button>
+    <ion-button color="light" (click)="getID()" *ngIf="signIn">Create account using national ID</ion-button>
+      <ion-item *ngIf="signIn">
+  <ion-label color="success" >{{whyID}}</ion-label>
+  </ion-item>
   
   
-    <ion-button color="light" (click)="registerLand()" >register property</ion-button>
+    <ion-button color="light" (click)="registerLand()" *ngIf="!signIn">{{regText}}</ion-button>
 
     </ion-item>
 
@@ -52,7 +55,7 @@
 <ion-label></ion-label>
 
     <!-- Default -->
-    <ion-button (click)="transferProperty()" >Transfer Property</ion-button>
+    <ion-button (click)="transferProperty()" *ngIf="!signIn ">{{transText}}</ion-button>
     </ion-item>
 
 
