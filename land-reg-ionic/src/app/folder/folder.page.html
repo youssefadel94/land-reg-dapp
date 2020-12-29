@@ -3,7 +3,7 @@
     <ion-buttons slot="start">
       <ion-menu-button></ion-menu-button>
     </ion-buttons>
-    <ion-title>{{ folder }}</ion-title>
+    <!-- <ion-title>{{ folder }}</ion-title> -->
   </ion-toolbar>
 </ion-header>
 
@@ -23,8 +23,13 @@
   </ion-item>
     <ion-item *ngIf="signIn">
   <ion-label>Address:</ion-label>
-  <ion-input [(ngModel)]="address" type="text"  placeholder="Enter Your ID"></ion-input>
+  <ion-input [(ngModel)]="address" type="text"  placeholder="Enter Your wallet address"></ion-input>
   </ion-item>
+    
+    <ion-item *ngIf="signIn">
+      <ion-label>Key:</ion-label>
+      <ion-input  type="text" placeholder="Enter Your signing key"></ion-input>
+    </ion-item>
   <ion-item *ngIf="!signIn && transfer">
   <ion-label>Reciver ID:</ion-label>
   <ion-input [(ngModel)]="receiverId" type="number" placeholder="Enter Reciver ID"></ion-input>
@@ -64,10 +69,11 @@
   <ion-list-header>
     Apartments
   </ion-list-header>
-  <ion-item  *ngFor="let apartment of apartments | async">
-    <h1>{{apartment.address}}</h1>
-    <p></p> 
-    <p></p>
+  <ion-item  *ngFor="let apartment of apartments ">
+    <!-- <h1>{{apartment.id}}</h1> -->
+    <p>{{apartment.id}}</p>
+    <p>  {{apartment.data.address}}</p> 
+    
   </ion-item>
 </ion-list>
 

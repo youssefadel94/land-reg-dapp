@@ -60,7 +60,7 @@ export class FolderPage implements OnInit {
     this.apartment = this.apartmentsCollectionRef.valueChanges();
   }
 
-
+  apartmentSeed = "ixdaT6MVNjmOCR2a4Tu0";
   ngOnInit() {
     this.folder = this.activatedRoute.snapshot.paramMap.get('id');
     this.initAndDisplayAccount();
@@ -92,19 +92,22 @@ export class FolderPage implements OnInit {
     //this.getOwned();
     
   }
-  getOwned() {
+  apartments=[];
+  getOwned(apart) {
     let that = this;
-    this.contractService.registerLand(this.id, this.address, this.value).then(
-      function () {
-        that.success = "transfer complete"; 
-        that.error = ""
-        that.initAndDisplayAccount();
-      }).catch(function (error) {
-        console.log(error);
-        that.success = ""; 
-        that.error = "something went wrong in register land"
-        that.initAndDisplayAccount();
-      });
+    this.apartments.push({ id: this.apartmentSeed, data: apart});
+    console.log(this.apartments);
+    // this.contractService.registerLand(this.id, this.address, this.value).then(
+    //   function () {
+    //     that.success = "transfer complete"; 
+    //     that.error = ""
+    //     that.initAndDisplayAccount();
+    //   }).catch(function (error) {
+    //     console.log(error);
+    //     that.success = ""; 
+    //     that.error = "something went wrong in register land"
+    //     that.initAndDisplayAccount();
+    //   });
 
   }
   registerLand() {
@@ -174,7 +177,7 @@ export class FolderPage implements OnInit {
           that.addressFireBase = apartment.address;
           that.location = apartment.location;
           that._apartment = <apartment>apartment;
-
+          this.getOwned(doc.data());
         } else {
           console.error('No matching invoice found');
           return null;
